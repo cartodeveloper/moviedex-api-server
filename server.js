@@ -1,9 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const MOVIES = require("./movies-data-small.json");
 console.log(process.env.API_TOKEN);
+
 const app = express();
+//Cross-Origin Resource Sharing, contains an express middleware we can use that will add headers to responses when appropriate.
+app.use(cors());
 
 app.use(morgan("dev"));
 
