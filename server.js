@@ -7,12 +7,11 @@ const MOVIES = require("./movies-data-small.json");
 console.log(process.env.API_TOKEN);
 
 const app = express();
+app.use(morgan("dev"));
 // This will help with security purposes.
-app.use(hemlet());
+app.use(helmet());
 //Cross-Origin Resource Sharing, contains an express middleware we can use that will add headers to responses when appropriate.
 app.use(cors());
-
-app.use(morgan("dev"));
 
 // Validate Token
 app.use(
@@ -31,29 +30,28 @@ app.use(
 // Movie Route & Filter
 app.get(
   "/movie",
-  (handleGetMovie = (req, res) => {
+  (getMovie = (req, res) => {
     let response = MOVIES;
+    const { genre, country, avg_vote } = req.query;
 
-    // GENRE FILTER
-    if (req.query.genre) {
+    // Genre filter
+    if (genre) {
       response = response.filter((movie) =>
-        movie.genre.toLowerCase().includes(req.query.genre.toLowerCase())
+        movie.genre.toLowerCase().includes(genre.toLowerCase())
       );
     }
 
-    // COUNTRY FILTER
-    if (req.query.country) {
+    // Country filter
+    if (country) {
       response = response.filter((movie) => {
-        return movie.country
-          .toLowerCase()
-          .includes(req.query.country.toLowerCase());
+        return movie.country.toLowerCase().includes(country.toLowerCase());
       });
     }
 
-    // AVG VOTE FILTER
-    if (req.query.avg_vote) {
+    // Avg vote filter
+    if (avg_vote) {
       response = response.filter((movie) => {
-        return Number(movie.avg_vote >= Number(req.query.avg_vote));
+        return Number(movie.avg_vote >= Number(avg_vote));
       });
     }
 
