@@ -58,8 +58,8 @@ app.get(
   })
 );
 
-// Dinamic Port or 8000 default
-const PORT = process.env.PORT || 8000;
+
+const PORT = 8000;
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
